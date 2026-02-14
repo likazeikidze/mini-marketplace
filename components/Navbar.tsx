@@ -5,6 +5,7 @@ import {
   ShoppingCartIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { ModeToggle } from "./ModeToggle";
 
 const Navbar = () => {
   return (
@@ -37,6 +38,8 @@ const Navbar = () => {
             <p>Sign In</p>
           </div>
         </Link>
+
+        <ModeToggle />
       </div>
     </nav>
   );
