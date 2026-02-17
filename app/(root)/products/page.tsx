@@ -1,64 +1,32 @@
+import { createClient } from "@/lib/supabase/server";
 import ProductCard from "@/components/ProductCard";
 
-const products = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    price: "$120",
-    image: "/products/wireless-headphones.jpg",
-  },
-  {
-    id: 2,
-    name: "Smartwatch",
-    price: "$250",
-    image: "/products/smartwatch.jpg",
-  },
-  {
-    id: 3,
-    name: "Bluetooth Speaker",
-    price: "$80",
-    image: "/products/bluetooth-speaker.jpg",
-  },
-  {
-    id: 4,
-    name: "Ultrabook Laptop",
-    price: "$1200",
-    image: "/products/laptop.jpg",
-  },
-  {
-    id: 5,
-    name: "Gaming Mouse",
-    price: "$60",
-    image: "/products/gaming-mouse.jpg",
-  },
-  {
-    id: 6,
-    name: "Mechanical Keyboard",
-    price: "$100",
-    image: "/products/mechanical-keyboard.jpg",
-  },
-  {
-    id: 7,
-    name: "Portable Charger",
-    price: "$40",
-    image: "/products/power-bank.jpg",
-  },
-  {
-    id: 8,
-    name: "VR Headset",
-    price: "$400",
-    image: "/products/vr-headset.jpg",
-  },
+const AllProducts = async () => {
+  const supabase = await createClient();
+  const { data: products, error } = await supabase.from("products").select("*");
 
-  {
-    id: 9,
-    name: "Security Camera",
-    price: "$90",
-    image: "/products/security-camera.jpg",
-  },
-];
+  if (error) {
+    console.error("Error fetching products:", error);
 
-const AllProducts = () => {
+    return (
+      <main className="min-h-screen w-full px-6 md:px-20 py-16">
+        <p className="text-center text-red-500">
+          Failed to load products. Please try again later.
+        </p>
+      </main>
+    );
+  }
+
+  if (!products || products.length === 0) {
+    return (
+      <main className="min-h-screen w-full px-6 md:px-20 py-16">
+        <p className="text-center text-gray-500">
+          No products found. Please check back later.
+        </p>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen w-full px-6 md:px-20 py-16">
       <div className="mb-12 text-center">

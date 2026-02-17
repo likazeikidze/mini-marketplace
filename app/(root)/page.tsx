@@ -1,24 +1,10 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
   return (
     <main className="min-h-screen w-full">
-      <div
-        className={`flex flex-col md:flex-row items-center justify-center gap-10 px-6 md:px-20 py-16
-          transition-all duration-1000 ease-out ${
-            loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-      >
+      <div className="flex flex-col md:flex-row items-center justify-center gap-10 px-6 md:px-20 py-16">
         <div className="w-full md:w-1/2">
           <Image
             src="/hero-img.jpg"

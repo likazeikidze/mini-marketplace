@@ -1,25 +1,11 @@
-"use client";
-
 import { ProductProps } from "@/types";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 
 const ProductCard = ({ product }: { product: ProductProps }) => {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-
   return (
-    <div
-      className={`h-105 w-full max-w-70 flex flex-col bg-gray-200 dark:bg-[#202020] rounded-xl shadow-md p-4
-        transition-all duration-1000 ease-out ${
-          loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-    >
+    <div className="h-105 w-full max-w-70 flex flex-col bg-gray-200 dark:bg-[#202020] rounded-xl shadow-md p-4">
       <Image
-        src={product.image}
+        src={product.image_url}
         alt={product.name}
         width={300}
         height={220}
