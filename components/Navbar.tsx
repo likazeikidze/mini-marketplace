@@ -2,12 +2,26 @@ import {
   HomeIcon,
   LayoutDashboard,
   LogInIcon,
+  LogOutIcon,
   ShoppingCartIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
 
-const Navbar = () => {
+async function logout() {
+  "use server";
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/");
+}
+
+const Navbar = async () => {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  const user = data.user;
+
   return (
     <nav className="flex justify-between items-center p-6 w-full">
       <Link href="/">
@@ -32,12 +46,21 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <Link href="/login">
-          <div className="flex gap-2 items-center justify-center cursor-pointer hover:text-[#6886e0]">
-            <LogInIcon />
-            <p>Log In</p>
-          </div>
-        </Link>
+        {user ? (
+          <form action={logout}>
+            <button className="flex gap-2 items-center justify-center cursor-pointer hover:text-[#6886e0]">
+              <LogOutIcon />
+              <p>Logout</p>
+            </button>
+          </form>
+        ) : (
+          <Link href="/login">
+            <div className="flex gap-2 items-center justify-center cursor-pointer hover:text-[#6886e0]">
+              <LogInIcon />
+              <p>Log In</p>
+            </div>
+          </Link>
+        )}
 
         <ModeToggle />
       </div>
