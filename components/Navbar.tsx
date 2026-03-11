@@ -19,8 +19,21 @@ async function logout() {
 
 const Navbar = async () => {
   const supabase = await createClient();
-  const { data } = await supabase.auth.getUser();
-  const user = data.user;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let role = null;
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    role = profile?.role;
+  }
 
   return (
     <nav className="flex justify-between items-center p-6 w-full">
@@ -39,12 +52,14 @@ const Navbar = async () => {
           </div>
         </Link>
 
-        <Link href="/dashboard">
-          <div className="flex gap-2 items-center justify-center cursor-pointer hover:text-[#6886e0]">
-            <LayoutDashboard />
-            <p>Admin</p>
-          </div>
-        </Link>
+        {role === "admin" && (
+          <Link href="/dashboard">
+            <div className="flex gap-2 items-center justify-center cursor-pointer hover:text-[#6886e0]">
+              <LayoutDashboard />
+              <p>Dashboard</p>
+            </div>
+          </Link>
+        )}
 
         {user ? (
           <form action={logout}>
